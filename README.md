@@ -155,7 +155,7 @@ Response:
 ## Credits
 
 - Original project by [Dapunta Khurayra X](https://github.com/Dapunta)
-- Optimized and enhanced by [YOUR_NAME]
+- Optimized and enhanced by [Erzam]
 
 ## License
 
