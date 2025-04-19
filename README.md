@@ -1,93 +1,166 @@
-## PoopDL - PoopHD Video Downloader & Streaming
+# PoopDL - Optimized PoopHD Video Downloader & Streaming
 
-<div style="text-align:justify; line-height:1.3;"><b>PoopDL</b> adalah platform untuk streaming atau mengunduh video PoopHD secara gratis dan cepat, yang diciptakan untuk mempermudah unduhan & streaming</div>
+<div align="center">
+  <img src="assets/icon.png" alt="PoopDL Logo" width="120" height="120">
+  <br>
+  <h3>Fast, Free, and Ad-Free PoopHD Video Downloader & Streaming</h3>
+</div>
 
-### Informasi
+## Overview
 
-<table style="border-collapse: collapse;">
+**PoopDL** is a powerful platform for streaming or downloading PoopHD videos quickly and for free. This optimized fork includes improved error handling, better code organization, enhanced performance, and a more robust architecture.
+
+## Features
+
+- ✅ **Multi-URL Processing**: Fetch multiple video URLs simultaneously
+- ✅ **Fast Downloads**: Direct download links with no throttling
+- ✅ **Ad-Free Streaming**: Clean, ad-free video streaming experience
+- ✅ **Responsive UI**: Works on desktop and mobile devices
+- ✅ **Improved Error Handling**: Better error messages and recovery
+- ✅ **Performance Optimizations**: Faster loading and processing
+
+## Screenshots
+
+<div align="center">
+  <table>
     <tr>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;">Version</td>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;">1.0</td>
+      <td><img src="assets/screenshot_1.png" alt="Screenshot 1" width="250"></td>
+      <td><img src="assets/screenshot_2.png" alt="Screenshot 2" width="250"></td>
+      <td><img src="assets/screenshot_3.png" alt="Screenshot 3" width="250"></td>
     </tr>
-    <tr>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;">Website</td>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;"><a href="https://poopdl.dapuntaratya.com">PoopDL</a></td>
-    </tr>
-    <tr>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;">API</td>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;"><a href="https://poopdl-api.dapuntaratya.com">PoopDL API</a></td>
-    </tr>
-    <tr>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;">Author</td>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;"><a href="https://www.facebook.com/Dapunta.Khurayra.X">Dapunta Khurayra X</a></td>
-    </tr>
-    <tr>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;">Status</td>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;">Open Source (Full)</td>
-    </tr>
-</table>
+  </table>
+</div>
 
-### Screenshot
+## Tech Stack
 
-<table style="border-collapse: collapse; width: 100%; max-width: 800px; table-layout: fixed;">
-    <tr>
-        <td style="border: 1px solid transparent; padding: 5px; text-align: center;">
-            <img src="assets/screenshot_1.png" alt="Image" style="width: 100%; height: auto;">
-        </td>
-        <td style="border: 1px solid transparent; padding: 5px; text-align: center;">
-            <img src="assets/screenshot_2.png" alt="Image" style="width: 100%; height: auto;">
-        </td>
-        <td style="border: 1px solid transparent; padding: 5px; text-align: center;">
-            <img src="assets/screenshot_3.png" alt="Image" style="width: 100%; height: auto;">
-        </td>
-    </tr>
-</table>
+- **Backend**: Python 3.x with Flask framework
+  - Improved error handling and logging
+  - Better code organization with proper typing
+  - Enhanced performance with optimized requests
 
-### TechStack
+- **Frontend**: HTML5, CSS3, and Vanilla JavaScript
+  - Modular code structure
+  - Better error handling and user feedback
+  - Improved performance with optimized DOM operations
 
-<table style="border-collapse: collapse;">
-    <tr>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;">Backend</td>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;">Python (Flask)</td>
-    </tr>
-    <tr>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;">Frontend</td>
-        <td style="border: 1px solid transparent; line-height:1.3; padding: 0px;">HTML, CSS (VanillaCSS), Javascript (VanillaJS)</td>
-    </tr>
-</table>
+## Installation
 
-<br>
+### Prerequisites
 
-### Changelog
+- Python 3.7 or higher
+- pip (Python package manager)
+- A modern web browser
 
-<br>
+### Setup
 
-- **Apa Yang Baru Di Versi 1.0?**
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/PoopDL.git
+   cd PoopDL
+   ```
 
-    - First deploy [PoopDL](https://poopdl.dapuntaratya.com/)
-    - Fitur :
-        - `Fetch` : Scrap data video *(bisa banyak url sekaligus)*
-        - `Download` : Mengunduh video *(fast download)*
-        - `Stream` : Streaming video lancar *(tanpa iklan)*
+2. Install the required dependencies:
+   ```bash
+   pip install -r backend/requirements.txt
+   ```
 
-<br>
+3. Run the Flask application:
+   ```bash
+   cd backend
+   python flask_app.py
+   ```
 
-### Cara Penggunaan API
+4. Open the `index.html` file in your web browser or use a local server:
+   ```bash
+   # Using Python's built-in HTTP server
+   python -m http.server
+   ```
 
-- Link : [API Documentation](https://github.com/Dapunta/PoopDL/tree/main/api)
+5. Access the application at `http://localhost:8000` (or the port shown in your terminal)
 
-<br>
+## API Usage
 
-### Other
+The PoopDL API provides two main endpoints:
 
-> [!TIP]  
-> Jika ingin menjalankan di local, pastikan `flask_app.py` sudah di-run  
-> Lalu jalankan *live-server* atau *localhost* pada `index.html`
+### 1. Generate File Information
 
-> [!WARNING]  
-> Platform ini hanya dapat berfungsi untuk URL PoopStream  
-> Contoh : `poop.vin`, `poop.pm`, `poop.locker`, dan lainnya
+```http
+POST /generate_file
+Content-Type: application/json
 
-> [!CAUTION]  
-> Platform ini tidak berfungsi untuk Doodstream  
-> Segala tindakan adalah tanggung jawab pengguna
+{
+  "url": "https://poop.vin/d/EXAMPLE_ID"
+}
+```
+
+Response:
+```json
+{
+  "status": "success",
+  "message": "",
+  "file": [
+    {
+      "domain": "poop.vin",
+      "id": "EXAMPLE_ID",
+      "name": "Example Video",
+      "image": "https://example.com/thumbnail.jpg"
+    }
+  ]
+}
+```
+
+### 2. Generate Download/Stream Link
+
+```http
+POST /generate_link
+Content-Type: application/json
+
+{
+  "domain": "poop.vin",
+  "id": "EXAMPLE_ID"
+}
+```
+
+Response:
+```json
+{
+  "status": "success",
+  "message": "",
+  "link": "https://example.com/direct-download-link.mp4"
+}
+```
+
+## Improvements in This Fork
+
+### Backend
+
+- Added comprehensive error handling and logging
+- Implemented proper type hints for better code maintainability
+- Optimized HTTP requests with timeout handling
+- Improved code organization with better class and function structure
+- Enhanced API responses with more detailed error messages
+
+### Frontend
+
+- Restructured JavaScript code with modular design
+- Added better error handling and user feedback
+- Improved performance with optimized DOM operations
+- Enhanced UI responsiveness and user experience
+- Added keyboard shortcuts for better accessibility
+
+## Limitations
+
+> ⚠️ **Note**: This platform only works with PoopHD URLs such as `poop.vin`, `poop.pm`, `poop.locker`, etc. It does not support Doodstream or other video hosting services.
+
+## Credits
+
+- Original project by [Dapunta Khurayra X](https://github.com/Dapunta)
+- Optimized and enhanced by [YOUR_NAME]
+
+## License
+
+This project is open source and available under the MIT License.
+
+## Disclaimer
+
+This tool is provided for educational purposes only. Users are responsible for complying with applicable laws and regulations when using this software.

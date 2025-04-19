@@ -1,94 +1,175 @@
-#--> Standard module & library
+# Standard modules & libraries
 import json
+import logging
+from typing import Dict, List, Any, Union
 
-#--> Flask
-from flask import Flask, Response, request
+# Flask
+from flask import Flask, Response, request, jsonify
 from flask_cors import CORS
+
+# Local modules
+from python.poop import PoopFile, PoopLink
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+# Initialize Flask app
 app = Flask(import_name=__name__)
 CORS(app=app)
 
-#--> Local module
-from python.poop import PoopFile, PoopLink
+# Constants
+API_VERSION = "1.1"
 
-#--> Main
 @app.route(rule='/')
-def stream() -> Response:
-    response: dict[str,str] = {
-        'status'  : 'success',
-        'service' : [
+def index() -> Response:
+    """Root endpoint providing API documentation.
+    
+    Returns:
+        JSON response with API information
+    """
+    response: Dict[str, Any] = {
+        'status': 'success',
+        'version': API_VERSION,
+        'service': [
             {
-                'method'   : 'POST',
-                'endpoint' : 'generate_file',
-                'url'      : '{}generate_file'.format(request.url_root),
-                'params'   : ['url'],
-                'response' : ['status', 'message', 'file']},
+                'method': 'POST',
+                'endpoint': 'generate_file',
+                'url': f'{request.url_root}generate_file',
+                'params': ['url'],
+                'response': ['status', 'message', 'file']
+            },
             {
-                'method'   : 'POST',
-                'endpoint' : 'generate_link',
-                'url'      : '{}generate_link'.format(request.url_root),
-                'params'   : ['domain', 'id'],
-                'response' : ['status', 'message', 'link']}],
-        'message' : 'hayo mau ngapain?'}
-    return Response(response=json.dumps(obj=response, sort_keys=False), mimetype='application/json')
+                'method': 'POST',
+                'endpoint': 'generate_link',
+                'url': f'{request.url_root}generate_link',
+                'params': ['domain', 'id'],
+                'response': ['status', 'message', 'link']
+            }
+        ],
+        'message': 'PoopDL API - PoopHD Video Downloader & Streaming'
+    }
+    return jsonify(response)
 
-#--> Get file
 @app.route(rule='/generate_file', methods=['POST'])
-def getFile() -> Response:
-
-    #--> Set default response
-    result : dict[str,str] = {'status':'failed', 'message':'invalid params', 'file':[]}
+def get_file() -> Response:
+    """Generate file information from a PoopHD URL.
+    
+    Expects a JSON payload with a 'url' parameter.
+    
+    Returns:
+        JSON response with file information
+    """
+    # Set default response
+    result: Dict[str, Any] = {'status': 'failed', 'message': 'invalid params', 'file': []}
 
     try:
+        # Validate request data
+        if not request.is_json:
+            logger.warning("Request did not contain valid JSON")
+            result['message'] = 'Request must be valid JSON'
+            return jsonify(result)
+            
+        # Get params
+        data = request.get_json()
+        url = data.get('url')
+
+        if not url:
+            logger.warning("Missing 'url' parameter in request")
+            return jsonify(result)
+
+        # Get file information
+        logger.info(f"Processing URL: {url}")
+        pf = PoopFile()
+        pf.getAllFile(url)
+        list_file = pf.file
+
+        # Response condition
+        if list_file:
+            result = {'status': 'success', 'message': '', 'file': list_file}
+            logger.info(f"Successfully processed URL, found {len(list_file)} files")
+        else:
+            result = {'status': 'failed', 'message': 'file not found', 'file': []}
+            logger.warning(f"No files found for URL: {url}")
+
+    except Exception as e:
+        error_message = f"Error processing URL: {str(e)}"
+        logger.error(error_message)
+        result = {'status': 'failed', 'message': error_message, 'file': []}
         
-        #--> Get params
-        data : dict = request.get_json()
-        url  : str  = data.get('url')
+    return jsonify(result)
 
-        if url:
-
-            #--> Get file
-            PF = PoopFile()
-            PF.getAllFile(url)
-            list_file : list = PF.file
-
-            #--> Response condition
-            if(len(list_file) != 0): result = {'status':'success', 'message':'', 'file':list_file}
-            else: result = {'status':'failed', 'message':'file not found', 'file':[]}
-
-    except Exception as e: result = {'status':'failed', 'message':'i dont know why error in poop app : {}'.format(str(e)), 'file':[]}
-    return Response(response=json.dumps(obj=result, sort_keys=False), mimetype='application/json')
-
-#--> Get link
 @app.route(rule='/generate_link', methods=['POST'])
-def getLink() -> Response:
-
-    #--> Set default response
-    result : dict[str,str] = {'status':'failed', 'message':'invalid params', 'link':''}
+def get_link() -> Response:
+    """Generate download/streaming link for a PoopHD file.
+    
+    Expects a JSON payload with 'domain' and 'id' parameters.
+    
+    Returns:
+        JSON response with direct link
+    """
+    # Set default response
+    result: Dict[str, Any] = {'status': 'failed', 'message': 'invalid params', 'link': ''}
 
     try:
+        # Validate request data
+        if not request.is_json:
+            logger.warning("Request did not contain valid JSON")
+            result['message'] = 'Request must be valid JSON'
+            return jsonify(result)
+            
+        # Get params
+        data = request.get_json()
+        domain = data.get('domain')
+        id_value = data.get('id')
 
-        #--> Get params
-        data   : dict = request.get_json()
-        domain : str = data.get('domain')
-        id     : str = data.get('id')
+        if not domain or not id_value:
+            logger.warning(f"Missing parameters: domain={domain}, id={id_value}")
+            return jsonify(result)
 
-        if domain and id:
+        # Get link
+        logger.info(f"Processing link request for domain: {domain}, id: {id_value}")
+        pl = PoopLink()
+        pl.getLink(domain, id_value)
+        link = pl.link
 
-            #--> Get link
-            PL = PoopLink()
-            PL.getLink(domain, id)
-            link : str = PL.link
+        # Response condition
+        if link:
+            result = {'status': 'success', 'message': '', 'link': link}
+            logger.info(f"Successfully generated link for id: {id_value}")
+        else:
+            result = {'status': 'failed', 'message': 'link not found', 'link': ''}
+            logger.warning(f"No link found for domain: {domain}, id: {id_value}")
 
-            #--> Response condition
-            if link != '': result = {'status':'success', 'message':'', 'link':link}
-            else: result = {'status':'failed', 'message':'link not found', 'link':''}
+    except Exception as e:
+        error_message = f"Error generating link: {str(e)}"
+        logger.error(error_message)
+        result = {'status': 'failed', 'message': error_message, 'link': ''}
+        
+    return jsonify(result)
 
-    except Exception as e: result = {'status':'failed', 'message':'i dont know why error in poop app : {}'.format(str(e)), 'file':[]}
-    return Response(response=json.dumps(obj=result, sort_keys=False), mimetype='application/json')
+# Error handler for 404 errors
+@app.errorhandler(404)
+def not_found(error):
+    """Handle 404 errors."""
+    return jsonify({
+        'status': 'failed',
+        'message': 'Endpoint not found',
+        'error': str(error)
+    }), 404
 
-#--> Initialization
+# Error handler for 500 errors
+@app.errorhandler(500)
+def server_error(error):
+    """Handle 500 errors."""
+    logger.error(f"Server error: {str(error)}")
+    return jsonify({
+        'status': 'failed',
+        'message': 'Internal server error',
+        'error': str(error)
+    }), 500
+
+# Initialization
 if __name__ == '__main__':
-    app.run(debug=True)
-
-# list_url : list[str] = ['https://dood.cm/f/i37879otxpi', 'https://poop.vin/d/LPxbX8Mn4KZ', 'https://poop.pm/f/t8e12zcx7ra', 'https://poop.pm/f/p6mqkgysdr0', 'https://poop.pm/f/be20crhis8g', 'https://poop.pm/f/WTdgWsSnlnv']
-# list_id  : list[str] = ['LPxbX8Mn4KZ', 'ggvl28sr6tuu', 'sjg5d1abyi5e', '6yz2q62slsir', 'JJOXFuOZoJL']
+    logger.info("Starting PoopDL API server...")
+    app.run(debug=True, host='0.0.0.0', port=5000)
